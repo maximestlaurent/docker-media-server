@@ -1,0 +1,157 @@
+
+version: "3.7"
+services:
+    portainer:
+        image: portainer/portainer-ce:latest
+        container_name: portainer
+        restart: always
+        command: -H unix:///var/run/docker.sock
+        ports:
+          - "9000:9000"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - ${USERDIR}/portainer/data:/data
+          - "/etc/localtime:/etc/localtime:ro"
+          - ${USERDIR}/shared:/shared
+        environment:
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - TZ=${TZ}
+
+    watchtower:
+        container_name: watchtower
+        restart: always
+        image: v2tec/watchtower:armhf-latest
+        environment:
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - TZ=${TZ}
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        command: --schedule "0 0 4 * * *" --cleanup
+
+    transmission-vpn:
+        container_name: transmission-vpn
+        image: haugene/transmission-openvpn:latest
+        cap_add:
+          - NET_ADMIN
+        devices:
+          - /dev/net/tun
+        restart: always
+        ports:
+          - "9091:9091"
+        dns:
+          - 8.8.8.8
+          - 8.8.4.4
+        volumes:
+          - /etc/localtime:/etc/localtime:ro
+          - ${MEDIADIR}/Media/downloads:/data
+        environment:
+          - OPENVPN_PROVIDER=PIA
+          - OPENVPN_USERNAME=${PIA_USERNAME}
+          - OPENVPN_PASSWORD=${PIA_PASSWORD}
+          - OPENVPN_CONFIG=ca_montreal
+          - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - TZ=${TZ}
+          - WEBPROXY_ENABLED=false
+          - LOCAL_NETWORK=10.0.0.0/24
+          - TRANSMISSION_DOWNLOAD_QUEUE_SIZE=10
+          - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=true
+          - TRANSMISSION_SPEED_LIMIT_UP_ENABLED=false
+          - TRANSMISSION_SPEED_LIMIT_UP=99999
+          - TRANSMISSION_RPC_HOST_WHITELIST=127.0.0.1,10.0.*.*
+          - TRANSMISSION_RPC_USERNAME=cute_user
+          - TRANSMISSION_RPC_PASSWORD=strong_password
+          - TRANSMISSION_UMASK=002
+          - TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=false
+          - TRANSMISSION_RATIO_LIMIT_ENABLED=false
+          - TRANSMISSION_BLOCKLIST_ENABLED=true
+          - TRANSMISSION_CACHE_SIZE_MB=32
+          - TRANSMISSION_BLOCKLIST_URL=http://john.bitsurge.net/public/biglist.p2p.gz
+          - ENABLE_UFW=false
+        logging:
+            driver: json-file
+            options:
+                max-size: 10m
+
+    plex:
+        container_name: plex
+        restart: unless-stopped
+        image: lscr.io/linuxserver/plex:arm32v7-latest
+        volumes:
+          - ${USERDIR}/plex:/config
+          - ${MEDIADIR}/cache:/config/Library/Application Support/Plex Media Server/Cache
+          - ${MEDIADIR}/transcode:/transcode
+          - ${MEDIADIR}:/media
+          - ${USERDIR}/shared:/shared
+          - /etc/localtime:/etc/localtime:ro
+        network_mode: host
+        environment:
+          - TZ=${TZ}
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - PLEX_UID=${PUID}
+          - PLEX_GID=${PGID}
+          - VERSION=docker
+        devices:
+          - /dev/dri:/dev/dri
+
+    prowlarr:
+        image: lscr.io/linuxserver/prowlarr:develop
+        container_name: prowlarr
+        environment:
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - TZ=${TZ}
+        volumes:
+          - ${USERDIR}/prowlarr:/config
+        ports:
+          - 9696:9696
+        restart: unless-stopped
+
+    sonarr:
+        image: lscr.io/linuxserver/sonarr:latest
+        container_name: sonarr
+        environment:
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - TZ=${TZ}
+        volumes:
+          - ${USERDIR}/sonarr:/config
+          - ${TVDIR}:/tv
+          - ${MEDIADIR}/Media/downloads/completed:/downloads
+        ports:
+          - 8989:8989
+        restart: unless-stopped
+
+    radarr:
+        image: lscr.io/linuxserver/radarr:latest
+        container_name: radarr
+        environment:
+          - PUID=${PUID}
+          - PGID=${PGID}
+          - TZ=${TZ}
+        volumes:
+          - ${USERDIR}/radarr:/config
+          - ${MOVIEDIR}:/movies
+          - ${MEDIADIR}/Media/downloads/completed:/downloads
+        ports:
+          - 7878:7878
+        restart: unless-stopped
+        
+    bazarr:
+      image: lscr.io/linuxserver/bazarr:latest
+      container_name: bazarr
+      environment:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - TZ=${TZ}
+      volumes:
+        - ${USERDIR}/bazarr:/config
+        - ${MOVIEDIR}:/movies
+        - ${TVDIR}:/tv
+      ports:
+        - 6767:6767
+      restart: unless-stopped
