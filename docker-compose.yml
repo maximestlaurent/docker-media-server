@@ -10,9 +10,9 @@ services:
           - "9000:9000"
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
-          - ${USERDIR}/portainer/data:/data
+          - ${USER_DIR}/portainer/data:/data
           - "/etc/localtime:/etc/localtime:ro"
-          - ${USERDIR}/shared:/shared
+          - ${USER_DIR}/shared:/shared
         environment:
           - PUID=${PUID}
           - PGID=${PGID}
@@ -45,7 +45,7 @@ services:
           - 8.8.4.4
         volumes:
           - /etc/localtime:/etc/localtime:ro
-          - ${MEDIADIR}/Media/downloads:/data
+          - ${DOWNLOAD_DIR}:/data
         environment:
           - OPENVPN_PROVIDER=PIA
           - OPENVPN_USERNAME=${PIA_USERNAME}
@@ -81,11 +81,11 @@ services:
         restart: unless-stopped
         image: lscr.io/linuxserver/plex:arm32v7-latest
         volumes:
-          - ${USERDIR}/plex:/config
-          - ${MEDIADIR}/cache:/config/Library/Application Support/Plex Media Server/Cache
-          - ${MEDIADIR}/transcode:/transcode
-          - ${MEDIADIR}:/media
-          - ${USERDIR}/shared:/shared
+          - ${USER_DIR}/plex:/config
+          - ${MEDIA_DIR}/cache:/config/Library/Application Support/Plex Media Server/Cache
+          - ${MEDIA_DIR}/transcode:/transcode
+          - ${MEDIA_DIR}:/media
+          - ${USER_DIR}/shared:/shared
           - /etc/localtime:/etc/localtime:ro
         network_mode: host
         environment:
@@ -106,7 +106,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${USERDIR}/prowlarr:/config
+          - ${USER_DIR}/prowlarr:/config
         ports:
           - 9696:9696
         restart: unless-stopped
@@ -119,9 +119,9 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${USERDIR}/sonarr:/config
-          - ${TVDIR}:/tv
-          - ${MEDIADIR}/Media/downloads/completed:/downloads
+          - ${USER_DIR}/sonarr:/config
+          - ${TV_DIR}:/tv
+          - ${DOWNLOAD_DIR}:/data
         ports:
           - 8989:8989
         restart: unless-stopped
@@ -134,9 +134,9 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${USERDIR}/radarr:/config
-          - ${MOVIEDIR}:/movies
-          - ${MEDIADIR}/Media/downloads/completed:/downloads
+          - ${USER_DIR}/radarr:/config
+          - ${MOVIE_DIR}:/movies
+          - ${DOWNLOAD_DIR}:/data
         ports:
           - 7878:7878
         restart: unless-stopped
@@ -149,9 +149,9 @@ services:
         - PGID=${PGID}
         - TZ=${TZ}
       volumes:
-        - ${USERDIR}/bazarr:/config
-        - ${MOVIEDIR}:/movies
-        - ${TVDIR}:/tv
+        - ${USER_DIR}/bazarr:/config
+        - ${MOVIE_DIR}:/movies
+        - ${TV_DIR}:/tv
       ports:
         - 6767:6767
       restart: unless-stopped
