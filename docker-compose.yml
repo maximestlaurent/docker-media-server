@@ -86,7 +86,7 @@ services:
           - PGID=${PGID}
           - VERSION=docker
         volumes:
-          - ${USER_DIR}/plex:/config         
+          - ${MEDIA_DIR}/plex:/config         
           - ${MOVIE_DIR}:/movies
           - ${TV_DIR}:/tv
         restart: unless-stopped
