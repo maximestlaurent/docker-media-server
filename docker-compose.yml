@@ -28,7 +28,7 @@ services:
           - TZ=${TZ}
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
-        command: --schedule "0 0 4 * * *" --cleanup
+        command: --schedule "0 0 3 * * *" --cleanup
 
     transmission-vpn:
         container_name: transmission-vpn
@@ -65,8 +65,10 @@ services:
           - TRANSMISSION_RPC_USERNAME=cute_user
           - TRANSMISSION_RPC_PASSWORD=strong_password
           - TRANSMISSION_UMASK=002
-          - TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=false
-          - TRANSMISSION_RATIO_LIMIT_ENABLED=false
+          - TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=true
+          - TRANSMISSION_IDLE_SEEDING_LIMIT=10
+          - TRANSMISSION_RATIO_LIMIT_ENABLED=true
+          - TRANSMISSION_RATIO_LIMIT=0.5
           - TRANSMISSION_BLOCKLIST_ENABLED=true
           - TRANSMISSION_CACHE_SIZE_MB=32
           - TRANSMISSION_BLOCKLIST_URL=http://john.bitsurge.net/public/biglist.p2p.gz
