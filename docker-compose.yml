@@ -10,9 +10,9 @@ services:
           - "9000:9000"
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
-          - ${USER_DIR}/portainer/data:/data
+          - ${MEDIA_DIR}/portainer/data:/data
           - "/etc/localtime:/etc/localtime:ro"
-          - ${USER_DIR}/shared:/shared
+          - ${MEDIA_DIR}/portainer/shared:/shared
         environment:
           - PUID=${PUID}
           - PGID=${PGID}
@@ -101,7 +101,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${USER_DIR}/prowlarr:/config
+          - ${MEDIA_DIR}/prowlarr:/config
         ports:
           - 9696:9696
         restart: unless-stopped
@@ -114,7 +114,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${USER_DIR}/sonarr:/config
+          - ${MEDIA_DIR}/sonarr:/config
           - ${TV_DIR}:/tv
           - ${DOWNLOAD_DIR}:/data
         ports:
@@ -129,7 +129,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${USER_DIR}/radarr:/config
+          - ${MEDIA_DIR}/radarr:/config
           - ${MOVIE_DIR}:/movies
           - ${DOWNLOAD_DIR}:/data
         ports:
@@ -144,7 +144,7 @@ services:
         - PGID=${PGID}
         - TZ=${TZ}
       volumes:
-        - ${USER_DIR}/bazarr:/config
+        - ${MEDIA_DIR}/bazarr:/config
         - ${MOVIE_DIR}:/movies
         - ${TV_DIR}:/tv
       ports:
