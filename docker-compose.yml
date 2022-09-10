@@ -46,6 +46,7 @@ services:
         volumes:
           - /etc/localtime:/etc/localtime:ro
           - ${DOWNLOAD_DIR}:/data
+          - ${MEDIA_DIR}/transmission:/config
         environment:
           - OPENVPN_PROVIDER=PIA
           - OPENVPN_USERNAME=${PIA_USERNAME}
