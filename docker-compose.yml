@@ -10,9 +10,9 @@ services:
           - "9000:9000"
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
-          - ${MEDIA_DIR}/portainer/data:/data
+          - ${USER_DIR}/portainer/data:/data
           - "/etc/localtime:/etc/localtime:ro"
-          - ${MEDIA_DIR}/portainer/shared:/shared
+          - ${USER_DIR}/portainer/shared:/shared
         environment:
           - PUID=${PUID}
           - PGID=${PGID}
@@ -46,7 +46,7 @@ services:
         volumes:
           - /etc/localtime:/etc/localtime:ro
           - ${DOWNLOAD_DIR}:/data
-          - ${MEDIA_DIR}/transmission:/config
+          - ${USER_DIR}/transmission:/config
         environment:
           - OPENVPN_PROVIDER=PIA
           - OPENVPN_USERNAME=${PIA_USERNAME}
@@ -89,7 +89,7 @@ services:
           - PGID=${PGID}
           - VERSION=docker
         volumes:
-          - ${MEDIA_DIR}/plex:/config         
+          - ${USER_DIR}/plex:/config
           - ${MOVIE_DIR}:/movies
           - ${TV_DIR}:/tv
         restart: unless-stopped
@@ -102,7 +102,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${MEDIA_DIR}/prowlarr:/config
+          - ${USER_DIR}/prowlarr:/config
         ports:
           - 9696:9696
         restart: unless-stopped
@@ -115,7 +115,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${MEDIA_DIR}/sonarr:/config
+          - ${USER_DIR}/sonarr:/config
           - ${TV_DIR}:/tv
           - ${DOWNLOAD_DIR}:/data
         ports:
@@ -130,7 +130,7 @@ services:
           - PGID=${PGID}
           - TZ=${TZ}
         volumes:
-          - ${MEDIA_DIR}/radarr:/config
+          - ${USER_DIR}/radarr:/config
           - ${MOVIE_DIR}:/movies
           - ${DOWNLOAD_DIR}:/data
         ports:
@@ -145,7 +145,7 @@ services:
         - PGID=${PGID}
         - TZ=${TZ}
       volumes:
-        - ${MEDIA_DIR}/bazarr:/config
+        - ${USER_DIR}/bazarr:/config
         - ${MOVIE_DIR}:/movies
         - ${TV_DIR}:/tv
       ports:
