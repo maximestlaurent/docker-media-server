@@ -37,8 +37,9 @@ services:
           - PUID=${PUID}
           - PGID=${PGID}
           - TZ=${TZ}
+          - ENABLE_SSL=yes
           - VPN_ENABLED=yes
-          - VPN_TYPE=openvpn
+          - VPN_TYPE=wireguard
           - LAN_NETWORK=10.0.0.0/24
           - VPN_USERNAME=${PIA_USERNAME}
           - VPN_PASSWORD=${PIA_PASSWORD}
