@@ -80,7 +80,7 @@ services:
                 max-size: 10m
     
     plex:
-        image: lscr.io/linuxserver/plex:arm32v7-latest
+        image: lscr.io/linuxserver/plex:latest
         container_name: plex
         network_mode: host
         environment:
