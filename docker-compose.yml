@@ -21,7 +21,7 @@ services:
     watchtower:
         container_name: watchtower
         restart: always
-        image: v2tec/watchtower:armhf-latest
+        image: containrrr/watchtower:latest
         environment:
           - PUID=${PUID}
           - PGID=${PGID}
@@ -95,7 +95,7 @@ services:
         restart: unless-stopped
 
     prowlarr:
-        image: lscr.io/linuxserver/prowlarr:develop
+        image: lscr.io/linuxserver/prowlarr:latest
         container_name: prowlarr
         environment:
           - PUID=${PUID}
