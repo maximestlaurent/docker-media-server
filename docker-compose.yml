@@ -37,7 +37,8 @@ services:
           - /dev/net/tun
         restart: always
         ports:
-          - "9091:9091"
+          - "9091:9091" #transmission
+          - "9090:9090" #joal
         dns:
           - 8.8.8.8
           - 8.8.4.4
@@ -77,6 +78,15 @@ services:
             options:
                 max-size: 10m
     
+    joal:
+      image: anthonyraymond/joal:latest
+      container_name: joal
+      restart: unless-stopped
+      volumes:
+        - ${USER_DIR}/joal-conf:/data # Copy the joal-conf folder to your USER_DIR
+      network_mode: container:transmission-vpn # This container's requests go through the transmission-vpn container.
+      command: ["--joal-conf=/data", "--spring.main.web-environment=true", "--server.port=9090", "--joal.ui.path.prefix=${JOAL_UI_PREFIX}", "--joal.ui.secret-token=${JOAL_UI_TOKEN}"]
+
     plex:
         image: lscr.io/linuxserver/plex:latest
         container_name: plex
