@@ -47,10 +47,10 @@ services:
           - ${DOWNLOAD_DIR}:/data
           - ${USER_DIR}/transmission:/config
         environment:
-          - OPENVPN_PROVIDER=PIA
-          - OPENVPN_USERNAME=${PIA_USERNAME}
-          - OPENVPN_PASSWORD=${PIA_PASSWORD}
-          - OPENVPN_CONFIG=ca_montreal
+          - OPENVPN_PROVIDER=${OPENVPN_PROVIDER}
+          - OPENVPN_USERNAME=${OPENVPN_USERNAME}
+          - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+          - OPENVPN_CONFIG=${OPENVPN_CONFIG}
           - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
           - PUID=${PUID}
           - PGID=${PGID}
