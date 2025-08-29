@@ -5,3 +5,6 @@
 2. Update values in the `.env` as needed
 3. Run `docker compose up` from this folder.
 4. Enjoy!
+
+## Which VPNs are supported, and which values should I use for the `OPENVPN_xyz` variables?
+See https://haugene.github.io/docker-transmission-openvpn/supported-providers/
