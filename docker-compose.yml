@@ -77,10 +77,12 @@ services:
             driver: json-file
             options:
                 max-size: 10m
-    
+
     joal:
       image: anthonyraymond/joal:latest
       container_name: joal
+      depends_on:
+        - transmission-vpn
       restart: unless-stopped
       volumes:
         - ${USER_DIR}/joal-conf:/data # Copy the joal-conf folder to your USER_DIR
